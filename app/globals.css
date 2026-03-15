@@ -24,3 +24,68 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.dialog {
+  background: #EFE5E5;
+  padding: 15px;
+  padding-top: 3px;
+  position: relative;
+  bottom: 5px;
+  left: 5px;
+}
+
+.circle-red {
+  display: flex; /* To center content inside */
+  width: 10px;
+  height: 10px; /* Width and height must be equal */
+  background-color: #DC6D6D;
+  border-radius: 50%; /* Makes it a circle */
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  color: white; /* Text color */
+}
+
+.circle-yellow {
+  display: flex; /* To center content inside */
+  width: 10px;
+  height: 10px; /* Width and height must be equal */
+  background-color: #F4DC67;
+  border-radius: 50%; /* Makes it a circle */
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  color: white; /* Text color */
+}
+
+.circle-green {
+  display: flex; /* To center content inside */
+  width: 10px;
+  height: 10px; /* Width and height must be equal */
+  background-color: #74E466;
+  border-radius: 50%; /* Makes it a circle */
+  align-items: center; /* Centers content vertically */
+  justify-content: center; /* Centers content horizontally */
+  color: white; /* Text color */
+}
+
+.text {
+  margin: auto; /* Ensures text is centered if flexbox is not used */
+  color: black
+}
+
+.main {
+  justify-content: space-between;
+  width: 100%
+}
+
+.dialog-content {
+  color: white;
+  display: flex;
+  margin: 10px;
+}
+
+.folder {
+  display: flex;
+  position: absolute;
+  right: 5px;
+  top: 5px
+}
