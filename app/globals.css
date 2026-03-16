@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #FCE7F3;
 }
 
 @theme inline {
@@ -14,7 +14,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #ebb3d3;
     --foreground: #ededed;
   }
 }
@@ -23,15 +23,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.dialog {
-  background: #EFE5E5;
-  padding: 15px;
-  padding-top: 3px;
-  position: relative;
-  bottom: 5px;
-  left: 5px;
 }
 
 .circle-red {
@@ -75,6 +66,15 @@ body {
 .main {
   justify-content: space-between;
   width: 100%
+}
+
+.dialog {
+  background: #EFE5E5;
+  padding: 15px;
+  padding-top: 3px;
+  /* position: relative;
+  bottom: 5px;
+  left: 5px; */
 }
 
 .dialog-content {

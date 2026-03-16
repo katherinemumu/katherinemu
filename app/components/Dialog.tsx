@@ -1,3 +1,6 @@
+'use client';
+import { useDraggable } from "../hooks/useDraggable";
+
 function CircleComponent ({color }: {color: string}) {
     return (
       <div className={`circle-${color}`}>
@@ -15,19 +18,25 @@ function DialogHeader() {
     )
   }
   
-  function DialogContents({text}: {text: string}) {
+  function DialogContents({text, height, width}: {text: string; height?: number, width?: number}) {
     return (
-      <div className="flex w-full h-full bg-white">
+      <div className={`flex bg-white h-full w-full katherine-text text-center`}>
         <h1 className="text-black text">{text}</h1>
       </div>
     )
   }
-  
-  export default function Dialog({text}: {text: string}) {
+ 
+  export default function Dialog({text, height, width, initialX, initialY}: {text: string; height?: number; width?: number; initialX: number, initialY: number }) {
+    const {ref, onMouseDown} = useDraggable();
+    const h = height ?? 400;
+    const w = width ?? 400;
+
     return (
-      <div className="flex-col dialog flex gap-2 h-100 w-100 border">
-        <DialogHeader/>
-        <DialogContents text={text}/>
+      <div ref={ref} className={`flex-col dialog flex gap-2 border`} style={{position: 'absolute', left: initialX, top: initialY, height:h, width: w}}>
+        <div onMouseDown={onMouseDown}>
+          <DialogHeader/>
+        </div>
+        <DialogContents text={text} height={h} width={w}/>
       </div>
     )
   }
