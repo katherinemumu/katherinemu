@@ -25,17 +25,27 @@ function DialogHeader() {
       </div>
     )
   }
- 
-  export default function Dialog({text, height, width, initialX, initialY}: {text: string; height?: number; width?: number; initialX: number, initialY: number }) {
+
+  export default function Dialog({text, height, width, initialX, initialY, zIndex, styles, onBringToFront}: {text: string; height?: number; width?: number; initialX: number, initialY: number, zIndex: number, styles?: React.CSSProperties, onBringToFront: () => void}) {
     const {ref, onMouseDown} = useDraggable();
     const h = height ?? 400;
     const w = width ?? 400;
 
     return (
-      <div ref={ref} className={`flex-col dialog flex gap-2 border`} style={{position: 'absolute', left: initialX, top: initialY, height:h, width: w}}>
-        <div onMouseDown={onMouseDown}>
-          <DialogHeader/>
-        </div>
+      <div 
+        ref={ref} 
+        className={`flex-col dialog flex gap-2 border`} 
+        style={{position: 'absolute', left: initialX, top: initialY, height:h, width: w, zIndex, ...styles}}
+        onMouseDown={onBringToFront}
+      >
+       <div
+        onMouseDown={(e) => {
+          onBringToFront();
+          onMouseDown(e);
+        }}
+      >
+  <DialogHeader />
+</div> 
         <DialogContents text={text} height={h} width={w}/>
       </div>
     )
