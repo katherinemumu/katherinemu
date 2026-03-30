@@ -1,52 +1,86 @@
-'use client';
+"use client";
 import { useDraggable } from "../hooks/useDraggable";
 
-function CircleComponent ({color }: {color: string}) {
-    return (
-      <div className={`circle-${color}`}>
-      </div>
-    );
-  };
+function CircleComponent({ color }: { color: string }) {
+  return <div className={`circle-${color}`}></div>;
+}
 
 function DialogHeader() {
-    return (
+  return (
     <div className="flex gap-2 flex-row justify-content">
-    <CircleComponent color="red"/>
-    <CircleComponent color="yellow"/>
-    <CircleComponent color="green"/>
-  </div>
-    )
-  }
-  
-  function DialogContents({text, height, width}: {text: string; height?: number, width?: number}) {
-    return (
-      <div className={`flex bg-white h-full w-full katherine-text text-center`}>
-        <h1 className="text-black text">{text}</h1>
-      </div>
-    )
-  }
+      <CircleComponent color="red" />
+      <CircleComponent color="yellow" />
+      <CircleComponent color="green" />
+    </div>
+  );
+}
 
-  export default function Dialog({text, height, width, initialX, initialY, zIndex, styles, onBringToFront}: {text: string; height?: number; width?: number; initialX: number, initialY: number, zIndex: number, styles?: React.CSSProperties, onBringToFront: () => void}) {
-    const {ref, onMouseDown} = useDraggable();
-    const h = height ?? 400;
-    const w = width ?? 400;
+function DialogContents({
+  children,
+  height,
+  width,
+}: {
+  children: React.ReactNode;
+  height?: number;
+  width?: number;
+}) {
+  return (
+    <div
+      className="flex bg-white h-full w-full justify-center items-center overflow-hidden"
+      style={{ height, maxWidth: width }}
+    >
+      <div className="max-w-full px-4 text-center break-words">{children}</div>
+    </div>
+  );
+}
 
-    return (
-      <div 
-        ref={ref} 
-        className={`flex-col dialog flex gap-2 border`} 
-        style={{position: 'absolute', left: initialX, top: initialY, height:h, width: w, zIndex, ...styles}}
-        onMouseDown={onBringToFront}
-      >
-       <div
+export default function Dialog({
+  children,
+  height,
+  width,
+  initialX,
+  initialY,
+  zIndex,
+  styles,
+  onBringToFront,
+}: {
+  children: React.ReactNode;
+  height?: number;
+  width?: number;
+  initialX: number;
+  initialY: number;
+  zIndex: number;
+  styles?: React.CSSProperties;
+  onBringToFront: () => void;
+}) {
+  const { ref, onMouseDown } = useDraggable();
+  const h = height ?? 400;
+  const w = width ?? 400;
+
+  return (
+    <div
+      ref={ref}
+      className={`flex-col dialog flex gap-2 border`}
+      style={{
+        position: "absolute",
+        left: initialX,
+        top: initialY,
+        height: h,
+        width: w,
+        zIndex,
+        ...styles,
+      }}
+      onMouseDown={onBringToFront}
+    >
+      <div
         onMouseDown={(e) => {
           onBringToFront();
           onMouseDown(e);
         }}
       >
-  <DialogHeader />
-</div> 
-        <DialogContents text={text} height={h} width={w}/>
+        <DialogHeader />
       </div>
-    )
-  }
+      <DialogContents children={children} height={h} width={w} />
+    </div>
+  );
+}
