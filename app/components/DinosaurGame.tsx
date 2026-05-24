@@ -34,7 +34,7 @@ function Obstacle({ obstacleX }: { obstacleX: number }) {
   );
 }
 
-export default function DinosaurGame() {
+export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   const [velocity, setVelocity] = useState(0);
   const gravity = -0.5;
   const [playerY, setPlayerY] = useState(15);
@@ -96,12 +96,14 @@ export default function DinosaurGame() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [playerY]);
 
-  return (
+  return isInFocus ? (
     <div>
       <Dino playerY={playerY} />
       {obstacles.map((obstacle) => (
         <Obstacle key={obstacle.id} obstacleX={obstacle.x} />
       ))}
     </div>
+  ) : (
+    <h1>paused</h1>
   );
 }

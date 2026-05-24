@@ -80,7 +80,9 @@ export default function Dialog({
       >
         <DialogHeader />
       </div>
-      <DialogContents children={children} height={h} width={w} />
+      <DialogContents height={h} width={w}>
+        {children}
+      </DialogContents>
     </div>
   );
 }

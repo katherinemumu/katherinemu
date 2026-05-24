@@ -5,9 +5,9 @@ import DinosaurGame from "./DinosaurGame";
 
 export default function DialogDesktop() {
   const dialogComponents = {
-    "game-1": <DinosaurGame />,
-    "game-2": <div className="text-black">another game</div>,
-    intro: (
+    "game-1": DinosaurGame,
+    "game-2": () => <div className="text-black">another game</div>,
+    intro: () => (
       <div
         style={{ fontFamily: "monospace", fontSize: "64px", color: "black" }}
       >
@@ -19,7 +19,6 @@ export default function DialogDesktop() {
   const [dialogs, setDialogs] = useState([
     {
       id: "game-1",
-      children: dialogComponents["game-1"],
       initialX: 100,
       initialY: 40,
       width: 400,
@@ -29,7 +28,6 @@ export default function DialogDesktop() {
     },
     {
       id: "game-2",
-      children: dialogComponents["game-2"],
       initialX: 150,
       initialY: 500,
       width: 400,
@@ -39,14 +37,16 @@ export default function DialogDesktop() {
     },
     {
       id: "intro",
-      children: dialogComponents["intro"],
       initialX: 400,
       initialY: 150,
       width: 800,
       height: 800,
       zIndex: 3,
+      styles: {},
     },
   ]);
+
+  const [currentFocus, setCurrentFocus] = useState("intro");
 
   const [nextZIndex, setNextZIndex] = useState(dialogs.length + 1);
 
@@ -57,23 +57,29 @@ export default function DialogDesktop() {
       ),
     );
     setNextZIndex((prev) => prev + 1);
+    setCurrentFocus(id);
   };
 
   return (
     <div>
-      {dialogs.map((dialog) => (
-        <Dialog
-          key={dialog.id}
-          children={dialog.children}
-          initialX={dialog.initialX}
-          initialY={dialog.initialY}
-          width={dialog.width}
-          height={dialog.height}
-          zIndex={dialog.zIndex}
-          styles={dialog.styles}
-          onBringToFront={() => bringToFront(dialog.id)}
-        />
-      ))}
+      {dialogs.map((dialog) => {
+        const Component =
+          dialogComponents[dialog.id as keyof typeof dialogComponents];
+        return (
+          <Dialog
+            key={dialog.id}
+            initialX={dialog.initialX}
+            initialY={dialog.initialY}
+            width={dialog.width}
+            height={dialog.height}
+            zIndex={dialog.zIndex}
+            styles={dialog.styles}
+            onBringToFront={() => bringToFront(dialog.id)}
+          >
+            <Component isInFocus={currentFocus === dialog.id} />
+          </Dialog>
+        );
+      })}
     </div>
   );
 }
