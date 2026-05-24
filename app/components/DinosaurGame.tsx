@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+type GameStatus = "paused" | "running" | "gameOver";
+
 function Dino({ playerY }: { playerY: number }) {
   return (
     <div
@@ -34,15 +36,54 @@ function Obstacle({ obstacleX }: { obstacleX: number }) {
   );
 }
 
+function isColliding({
+  playerY,
+  obstacleX,
+}: {
+  playerY: number;
+  obstacleX: number;
+}) {
+  const dinoLeft = 100;
+  const dinoRight = dinoLeft + 40;
+  const dinoBottom = playerY;
+  const dinoTop = dinoBottom + 40;
+
+  const obstacleLeft = obstacleX;
+  const obstacleRight = obstacleLeft + 20;
+  const obstacleBottom = 15;
+  const obstacleTop = obstacleBottom + 40;
+
+  const horizontallyOverlapping =
+    dinoRight > obstacleLeft && dinoLeft < obstacleRight;
+
+  const verticallyOverlapping =
+    dinoTop > obstacleBottom && dinoBottom < obstacleTop;
+
+  return horizontallyOverlapping && verticallyOverlapping;
+}
+
 export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   const [velocity, setVelocity] = useState(0);
   const gravity = -0.5;
   const [playerY, setPlayerY] = useState(15);
-  const [obstacles, setObstacles] = useState([{ id: 1, x: 400 }]);
+  const [obstacles, setObstacles] = useState([{ id: 1, x: 200 }]);
   const obstacleSpeed = -5;
+  const [status, setStatus] = useState<GameStatus>("paused");
+
+  const isRunning = status === "running";
+
+  // If the dialog loses focus, pause the game.
+  // But focusing the dialog again does NOT automatically resume it.
+  useEffect(() => {
+    if (!isInFocus && status === "running") {
+      setStatus("paused");
+    }
+  }, [isInFocus, status]);
 
   // game loop for dino movement
   useEffect(() => {
+    if (!isRunning) return;
+
     const interval = setInterval(() => {
       setPlayerY((y) => {
         if (velocity > 0) {
@@ -63,6 +104,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
   // game loop for obstacle movement
   useEffect(() => {
+    if (!isRunning) return;
     const interval = setInterval(() => {
       const movedObstaclces = obstacles.map((obstacle) => ({
         ...obstacle,
@@ -78,7 +120,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   // game loop for obstacle adding
   useEffect(() => {
     const interval = setInterval(() => {
-      setObstacles((prev) => [...prev, { id: Date.now(), x: 400 }]);
+      setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
     }, 2500);
 
     return () => clearInterval(interval);
@@ -86,6 +128,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
   // keypress
   useEffect(() => {
+    if (!isRunning) return;
     const handleKey = (e) => {
       if (e.code === "Space" && playerY === 15) {
         console.log("jump!");
@@ -94,16 +137,67 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [playerY]);
+  }, [playerY, status]);
 
-  return isInFocus ? (
+  // for obstacle detection
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const hasCollision = obstacles.some((obstacle) =>
+      isColliding({
+        playerY,
+        obstacleX: obstacle.x,
+      }),
+    );
+
+    if (hasCollision) {
+      setStatus("gameOver");
+    }
+  }, [isRunning, playerY, obstacles]);
+
+  const resumeGame = () => {
+    setStatus("running");
+  };
+
+  const replayGame = () => {
+    setVelocity(0);
+    setPlayerY(15);
+    setObstacles([{ id: 1, x: 400 }]);
+    setStatus("running");
+  };
+
+  return (
     <div>
       <Dino playerY={playerY} />
       {obstacles.map((obstacle) => (
         <Obstacle key={obstacle.id} obstacleX={obstacle.x} />
       ))}
+
+      {status === "paused" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+          <h1 className="mb-4 text-2xl">Paused</h1>
+
+          <button
+            className="border border-black px-4 py-2"
+            onClick={resumeGame}
+          >
+            Resume
+          </button>
+        </div>
+      )}
+
+      {status === "gameOver" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+          <h1 className="mb-4 text-2xl">GameOver</h1>
+
+          <button
+            className="border border-black px-4 py-2"
+            onClick={replayGame}
+          >
+            Play again
+          </button>
+        </div>
+      )}
     </div>
-  ) : (
-    <h1>paused</h1>
   );
 }
