@@ -2,11 +2,12 @@
 import { useState } from "react";
 import Dialog from "./Dialog";
 import DinosaurGame from "./DinosaurGame";
+import Piano from "./Piano";
 
 export default function DialogDesktop() {
   const dialogComponents = {
     "game-1": DinosaurGame,
-    "game-2": () => <div className="text-black">another game</div>,
+    "game-2": Piano,
     intro: () => (
       <div
         style={{ fontFamily: "monospace", fontSize: "64px", color: "black" }}

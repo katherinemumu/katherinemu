@@ -67,7 +67,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   const gravity = -0.5;
   const [playerY, setPlayerY] = useState(15);
   const [obstacles, setObstacles] = useState([{ id: 1, x: 200 }]);
-  const obstacleSpeed = -5;
+  const obstacleSpeed = -10;
   const [status, setStatus] = useState<GameStatus>("paused");
 
   const isRunning = status === "running";
@@ -121,7 +121,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
-    }, 2500);
+    }, 1000 * Math.random());
 
     return () => clearInterval(interval);
   }, []);
@@ -188,7 +188,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
       {status === "gameOver" && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
-          <h1 className="mb-4 text-2xl">GameOver</h1>
+          <h1 className="mb-4 text-2xl">Game Over</h1>
 
           <button
             className="border border-black px-4 py-2"
