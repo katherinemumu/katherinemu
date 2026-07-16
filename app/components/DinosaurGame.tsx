@@ -188,27 +188,27 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
       ))}
 
       {status === "paused" && (
-        <div className="inset-0 flex flex-col items-center justify-center text-black">
-          <h1 className="mb-4 text-2xl">Paused</h1>
+        <div className="inset-0 flex flex-col items-center gap-3 justify-center text-black">
+          <h1 className="mb-4 text-2xl text">Paused</h1>
 
           <button
             className="border border-black px-4 py-2"
             onClick={resumeGame}
           >
-            Resume
+            <div className="text">Resume</div>
           </button>
         </div>
       )}
 
       {status === "gameOver" && (
-        <div className="inset-0 flex flex-col items-center justify-center text-black">
-          <h1 className="mb-4 text-2xl">Game Over</h1>
+        <div className="inset-0 flex flex-col items-center justify-center gap-3 text-black">
+          <h1 className="mb-4 text-2xl text">Game Over</h1>
 
           <button
             className="border border-black px-4 py-2"
             onClick={replayGame}
           >
-            Play again
+            <div className="text">Play again</div>
           </button>
         </div>
       )}

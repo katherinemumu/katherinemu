@@ -60,15 +60,16 @@ body {
 
 .text {
   margin: auto; /* Ensures text is centered if flexbox is not used */
-  color: black
+  color: black;
+  font-family: monospace;
 }
 
 .main {
   justify-content: space-between;
   width: 100%;
   /* background-color: rgb(227, 147, 219); */
-  background: #ffe3ef;
-  background: radial-gradient(circle, rgba(255, 227, 239, 1) 0%, rgba(207, 159, 195, 1) 100%); 
+  background: #cb84e0;
+  background: radial-gradient(circle, rgba(203, 132, 224, 1) 0%, rgba(224, 184, 218, 1) 100%);
 }
 
 .aboutMe {
@@ -77,11 +78,11 @@ body {
 }
 
 .dialog {
-  background: #cda9c7;
+  background: #E6D5EB;
   padding: 15px;
   padding-top: 3px;
   border-radius: 10px;
-  border-color: #cda9c7;
+  border-color: #E6D5EB;
 }
 
 .dialog-content {
