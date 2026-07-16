@@ -65,14 +65,23 @@ body {
 
 .main {
   justify-content: space-between;
-  width: 100%
+  width: 100%;
+  /* background-color: rgb(227, 147, 219); */
+  background: #ffe3ef;
+  background: radial-gradient(circle, rgba(255, 227, 239, 1) 0%, rgba(207, 159, 195, 1) 100%); 
+}
+
+.aboutMe {
+  width: 100%;
+  background-color: rgb(245, 205, 212); 
 }
 
 .dialog {
-  background: #EFE5E5;
+  background: #cda9c7;
   padding: 15px;
   padding-top: 3px;
-  border-radius: 100px;
+  border-radius: 10px;
+  border-color: #cda9c7;
 }
 
 .dialog-content {

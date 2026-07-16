@@ -67,7 +67,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   const gravity = -0.5;
   const [playerY, setPlayerY] = useState(15);
   const [obstacles, setObstacles] = useState([{ id: 1, x: 200 }]);
-  const obstacleSpeed = -10;
+  const obstacleSpeed = -10; // bigger abs value is faster
   const [status, setStatus] = useState<GameStatus>("paused");
 
   const isRunning = status === "running";
@@ -119,12 +119,26 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
   // game loop for obstacle adding
   useEffect(() => {
-    const interval = setInterval(() => {
-      setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
-    }, 1000 * Math.random());
-
-    return () => clearInterval(interval);
-  }, []);
+    if (!isRunning) return;
+  
+    let timeout: NodeJS.Timeout;
+  
+    const spawnObstacle = () => {
+      setObstacles((prev) => [
+        ...prev,
+        { id: Date.now(), x: 350 },
+      ]);
+  
+      const delay = Math.random() * 1500 + 1000;
+      // random between 1000ms and 2500ms
+  
+      timeout = setTimeout(spawnObstacle, delay);
+    };
+  
+    spawnObstacle();
+  
+    return () => clearTimeout(timeout);
+  }, [isRunning]);
 
   // keypress
   useEffect(() => {
@@ -174,7 +188,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
       ))}
 
       {status === "paused" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+        <div className="inset-0 flex flex-col items-center justify-center text-black">
           <h1 className="mb-4 text-2xl">Paused</h1>
 
           <button
@@ -187,7 +201,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
       )}
 
       {status === "gameOver" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+        <div className="inset-0 flex flex-col items-center justify-center text-black">
           <h1 className="mb-4 text-2xl">Game Over</h1>
 
           <button
