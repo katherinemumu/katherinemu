@@ -4,7 +4,16 @@ import Dialog from "./Dialog";
 import DinosaurGame from "./DinosaurGame";
 import Piano from "./Piano";
 
-export default function DialogDesktop() {
+export type Dialog = {
+  id: string,
+  initialX: number,
+  initialY: number,
+  width: number,
+  height: number,
+  zIndex: number,
+}
+
+export default function DialogDesktop({extraDialogs}: {extraDialogs?: Array<Dialog>}) {
   const dialogComponents = {
     "game-1": DinosaurGame,
     "game-2": Piano,
@@ -15,9 +24,14 @@ export default function DialogDesktop() {
         hello! i'm katherine
       </div>
     ),
+    "projects": () => (
+      <div style={{ fontFamily: "monospace", fontSize: "64px", color: "black" }}>
+        hi
+      </div>
+    )
   };
 
-  const [dialogs, setDialogs] = useState([
+  const [dialogs, setDialogs] = useState<Array<Dialog>>([
     {
       id: "game-1",
       initialX: 100,
@@ -25,7 +39,6 @@ export default function DialogDesktop() {
       width: 400,
       height: 400,
       zIndex: 1,
-      styles: {},
     },
     {
       id: "game-2",
@@ -34,7 +47,6 @@ export default function DialogDesktop() {
       width: 400,
       height: 400,
       zIndex: 2,
-      styles: {},
     },
     {
       id: "intro",
@@ -43,7 +55,6 @@ export default function DialogDesktop() {
       width: 800,
       height: 800,
       zIndex: 3,
-      styles: {},
     },
   ]);
 
@@ -61,9 +72,14 @@ export default function DialogDesktop() {
     setCurrentFocus(id);
   };
 
+  const dialogsToShow: Dialog[] =
+  extraDialogs?.length === 0
+    ? dialogs
+    : [...dialogs, ...(extraDialogs ?? [])];
+
   return (
     <div>
-      {dialogs.map((dialog) => {
+      {dialogsToShow.map((dialog) => {
         const Component =
           dialogComponents[dialog.id as keyof typeof dialogComponents];
         return (
@@ -74,7 +90,6 @@ export default function DialogDesktop() {
             width={dialog.width}
             height={dialog.height}
             zIndex={dialog.zIndex}
-            styles={dialog.styles}
             onBringToFront={() => bringToFront(dialog.id)}
           >
             <Component isInFocus={currentFocus === dialog.id} />

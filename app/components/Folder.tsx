@@ -1,8 +1,9 @@
 import Image from "next/image";
 
-export default function Folder({ text }: { text: string }) {
+export default function Folder({ text, onClick }: { text: string, onClick: () => void }) {
   return (
-    <div className="flex-col justify-center flex text-center gap-2">
+    <div className="flex-col justify-center flex text-center gap-2"
+      onClick={onClick}>
       <div>
         <Image
           src="/newFolder.png"
