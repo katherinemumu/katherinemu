@@ -67,7 +67,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   const gravity = -0.5;
   const [playerY, setPlayerY] = useState(15);
   const [obstacles, setObstacles] = useState([{ id: 1, x: 200 }]);
-  const obstacleSpeed = -10;
+  const obstacleSpeed = -10; // bigger abs value is faster
   const [status, setStatus] = useState<GameStatus>("paused");
 
   const isRunning = status === "running";
@@ -119,12 +119,23 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
   // game loop for obstacle adding
   useEffect(() => {
-    const interval = setInterval(() => {
-      setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
-    }, 9000 * Math.random());
+    if (!isRunning) return;
 
-    return () => clearInterval(interval);
-  }, []);
+    let timeout: NodeJS.Timeout;
+
+    const spawnObstacle = () => {
+      setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
+
+      const delay = Math.random() * 1500 + 1000;
+      // random between 1000ms and 2500ms
+
+      timeout = setTimeout(spawnObstacle, delay);
+    };
+
+    spawnObstacle();
+
+    return () => clearTimeout(timeout);
+  }, [isRunning]);
 
   // keypress
   useEffect(() => {
@@ -181,7 +192,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
             className="border border-black px-4 py-2"
             onClick={resumeGame}
           >
-            Resume
+            <div className="text">Resume</div>
           </button>
         </div>
       )}
@@ -194,7 +205,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
             className="border border-black px-4 py-2"
             onClick={replayGame}
           >
-            Play again
+            <div className="text">Play again</div>
           </button>
         </div>
       )}
