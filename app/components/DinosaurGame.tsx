@@ -121,7 +121,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   useEffect(() => {
     const interval = setInterval(() => {
       setObstacles((prev) => [...prev, { id: Date.now(), x: 350 }]);
-    }, 1000 * Math.random());
+    }, 9000 * Math.random());
 
     return () => clearInterval(interval);
   }, []);
@@ -174,7 +174,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
       ))}
 
       {status === "paused" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+        <div className="dialog-overlay">
           <h1 className="mb-4 text-2xl">Paused</h1>
 
           <button
@@ -187,7 +187,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
       )}
 
       {status === "gameOver" && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 text-black">
+        <div className="dialog-overlay">
           <h1 className="mb-4 text-2xl">Game Over</h1>
 
           <button
