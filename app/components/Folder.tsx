@@ -1,19 +1,6 @@
-import Image from "next/image";
-
-export default function Folder({ text, onClick }: { text: string, onClick: () => void }) {
-  return (
-    <div className="flex-col justify-center flex text-center gap-2"
-      onClick={onClick}>
-      <div>
-        <Image
-          src="/newFolder.png"
-          alt="folder icon"
-          width={100}
-          height={100}
-          priority
-        />
-      </div>
-      <h3 className="text">{text}</h3>
-    </div>
-  );
+export default function Folder({ text, onClick, disabled = false }: { text: string; onClick?: () => void; disabled?: boolean }) {
+  const content = <><span className="folder-icon" aria-hidden="true" /><span className="folder-label">{text}</span>{disabled && <span className="folder-soon">coming soon</span>}</>;
+  return onClick || disabled
+    ? <button type="button" className="desktop-folder" onClick={onClick} disabled={disabled}>{content}</button>
+    : <span className="desktop-folder">{content}</span>;
 }

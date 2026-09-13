@@ -20,12 +20,8 @@ function PianoKey({ audioFile, note, blackKeyPosition }: {
       type="button"
       aria-label={note}
       title={note}
-      className={`border border-black cursor-pointer touch-manipulation focus-visible:outline-2 focus-visible:outline-pink-500 focus-visible:outline-offset-2 ${
-        blackKeyPosition === undefined
-          ? "w-10 h-40 shrink-0 bg-white active:bg-gray-200"
-          : "absolute top-0 z-10 w-6 h-24 -translate-x-1/2 bg-black active:bg-gray-700"
-      }`}
-      style={blackKeyPosition === undefined ? undefined : { left: `${blackKeyPosition * 2.5}rem` }}
+      className={blackKeyPosition === undefined ? "piano-key" : "piano-black-key"}
+      style={blackKeyPosition === undefined ? undefined : { left: `${blackKeyPosition * 12.5}%` }}
       onPointerDown={(event) => {
         if (event.button === 0) playAudio();
       }}
@@ -33,13 +29,17 @@ function PianoKey({ audioFile, note, blackKeyPosition }: {
         // Keyboard and assistive technology activation have no pointer click count.
         if (event.detail === 0) playAudio();
       }}
-    />
+    >
+      {blackKeyPosition === undefined ? note[0] : null}
+    </button>
   );
 }
 
 export default function Piano() {
   return (
-    <div className="relative flex w-fit items-start" role="group" aria-label="Piano">
+    <div className="piano-content">
+      <p className="eyebrow">A LITTLE MUSIC BREAK</p>
+      <div className="piano-keys" role="group" aria-label="Piano">
       <PianoKey note="C4" audioFile="/piano/01_C4_261.63Hz.wav" />
       <PianoKey note="C sharp / D flat 4" audioFile="/piano/02_Cs4_277.18Hz.wav" blackKeyPosition={1} />
       <PianoKey note="D4" audioFile="/piano/03_D4_293.66Hz.wav" />
@@ -53,6 +53,8 @@ export default function Piano() {
       <PianoKey note="A sharp / B flat 4" audioFile="/piano/11_As4_466.16Hz.wav" blackKeyPosition={6} />
       <PianoKey note="B4" audioFile="/piano/12_B4_493.88Hz.wav" />
       <PianoKey note="C5" audioFile="/piano/13_C5_523.25Hz.wav" />
+      </div>
+      <p className="piano-hint">click a key to play a note ♪</p>
     </div>
   );
 }

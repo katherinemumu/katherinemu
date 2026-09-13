@@ -11,7 +11,8 @@ function Dino({ playerY }: { playerY: number }) {
         left: 100,
         width: 40,
         height: 40,
-        background: "green",
+        background: "#856c9b",
+        border: "2px solid #503d64",
       }}
     />
   );
@@ -30,7 +31,8 @@ function Obstacle({ obstacleX }: { obstacleX: number }) {
         left: obstacleX,
         width: 20,
         height: 40,
-        background: "red",
+        background: "#bc5e87",
+        border: "2px solid #503d64",
       }}
     />
   );
@@ -140,15 +142,15 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   // keypress
   useEffect(() => {
     if (!isRunning) return;
-    const handleKey = (e) => {
+    const handleKey = (e: KeyboardEvent) => {
       if (e.code === "Space" && playerY === 15) {
-        console.log("jump!");
+        e.preventDefault();
         setVelocity(10);
       }
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [playerY, status]);
+  }, [playerY, isRunning]);
 
   // for obstacle detection
   useEffect(() => {
@@ -178,7 +180,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
   };
 
   return (
-    <div>
+    <div className="game-stage">
       <Dino playerY={playerY} />
       {obstacles.map((obstacle) => (
         <Obstacle key={obstacle.id} obstacleX={obstacle.x} />
@@ -186,14 +188,15 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
 
       {status === "paused" && (
         <div className="dialog-overlay">
-          <h1 className="mb-4 text-2xl">Paused</h1>
+          <h1 className="mb-4 text-2xl">A tiny game break</h1>
 
           <button
             className="border border-black px-4 py-2"
             onClick={resumeGame}
           >
-            <div className="text">Resume</div>
+            <div>Play / resume</div>
           </button>
+          <p className="game-hint">press space to jump</p>
         </div>
       )}
 
@@ -207,6 +210,7 @@ export default function DinosaurGame({ isInFocus }: { isInFocus: boolean }) {
           >
             <div className="text">Play again</div>
           </button>
+          <p className="game-hint">press space to jump</p>
         </div>
       )}
     </div>
