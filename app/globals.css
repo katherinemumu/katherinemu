@@ -40,11 +40,14 @@ h1 span{color:#bc5e87}
 .project-content h2{font-family:Georgia,serif;font-size:28px;margin:0 0 12px}
 .piano-content{padding:17px 20px}
 .piano-content .eyebrow{margin-bottom:12px}
-.piano-keys{display:flex;height:96px}
+.piano-keys{position:relative;display:flex;height:96px}
 .piano-key{flex:1;min-width:0;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;background:#fffdf5;color:var(--foreground);border:1px solid var(--border);border-bottom-width:4px;font:inherit;font-size:10px}
-.piano-key:not(:nth-child(3)):not(:nth-child(7)):not(:last-child)::after{content:"";position:absolute;right:-24%;top:0;width:45%;height:58%;background:#503d64;border:1px solid #503d64;z-index:1;pointer-events:none}
 .piano-key:hover{background:#fbe3ec}
 .piano-key:active{background:#efc2d6;border-bottom-width:1px}
+.piano-key,.piano-black-key{touch-action:manipulation}
+.piano-black-key{position:absolute;top:0;z-index:1;transform:translateX(-50%);width:7.5%;height:58%;background:#503d64;border:1px solid #503d64;border-bottom:3px solid #362543;border-radius:0 0 2px 2px}
+.piano-black-key:hover{background:#725788}
+.piano-black-key:active{background:#946fa8;border-bottom-width:1px}
 .piano-hint{font-size:10px;margin:12px 0 0}
 .game-stage{position:relative;flex:1;overflow:hidden;background:linear-gradient(transparent calc(100% - 16px),#c9b8d9 calc(100% - 16px),#c9b8d9 calc(100% - 14px),transparent calc(100% - 14px))}
 .dialog-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff8eeeF;color:var(--foreground);gap:8px}
