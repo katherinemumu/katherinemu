@@ -1,33 +1,11 @@
-function PianoKey({ audioFile }: { audioFile: string }) {
-  const playAudio = () => {
-    // 1. Create a new audio instance
-    const audio = new Audio(audioFile);
-
-    // 2. Play the audio file
-    audio.play().catch((error) => {
-      console.error("Playback failed:", error);
-    });
-  };
-
-  return (
-    <div
-      className="border border-black w-10 h-40"
-      onMouseDown={playAudio}
-    ></div>
-  );
-}
-
+const notes = [
+  ["C", "01_C4_261.63Hz.wav"], ["D", "03_D4_293.66Hz.wav"],
+  ["E", "05_E4_329.63Hz.wav"], ["F", "06_F4_349.23Hz.wav"],
+  ["G", "08_G4_392.00Hz.wav"], ["A", "10_A4_440.00Hz.wav"],
+  ["B", "12_B4_493.88Hz.wav"], ["C", "13_C5_523.25Hz.wav"],
+];
 export default function Piano() {
-  return (
-    <div className="flex items-center">
-      <PianoKey audioFile="piano/01_C4_261.63Hz.wav" />
-      <PianoKey audioFile="piano/03_D4_293.66Hz.wav" />
-      <PianoKey audioFile="piano/05_E4_329.63Hz.wav" />
-      <PianoKey audioFile="piano/06_F4_349.23Hz.wav" />
-      <PianoKey audioFile="piano/08_G4_392.00Hz.wav" />
-      <PianoKey audioFile="piano/10_A4_440.00Hz.wav" />
-      <PianoKey audioFile="piano/12_B4_493.88Hz.wav" />
-      <PianoKey audioFile="piano/13_C5_523.25Hz.wav" />
-    </div>
-  );
+  return <div className="piano-content"><p className="eyebrow">A LITTLE MUSIC BREAK</p><div className="piano-keys">{notes.map(([note, file], index) =>
+    <button type="button" className="piano-key" key={file} aria-label={`Play ${note}${index === 7 ? 5 : 4}`} onClick={() => { new Audio(`/piano/${file}`).play().catch(console.error); }}>{note}</button>
+  )}</div><p className="piano-hint">click a key to play a note ♪</p></div>;
 }
