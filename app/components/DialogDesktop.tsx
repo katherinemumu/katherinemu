@@ -23,17 +23,17 @@ const initialDialogs: Dialog[] = [
     zIndex: 1,
   },
   {
-    id: "game-1",
-    initialX: 580,
-    initialY: 290,
+    id: "duck-game",
+    initialX: 780,
+    initialY: 400,
     width: 350,
     height: 240,
     zIndex: 2,
   },
   {
-    id: "game-2",
+    id: "piano",
     initialX: 130,
-    initialY: 455,
+    initialY: 600,
     width: 360,
     height: 220,
     zIndex: 3,
@@ -41,8 +41,8 @@ const initialDialogs: Dialog[] = [
 ];
 const titles: Record<string, string> = {
   intro: "welcome.txt",
-  "game-1": "DuckGame",
-  "game-2": "piano",
+  "duck-game": "duck walk",
+  piano: "piano",
   projects: "projects",
 };
 
@@ -91,10 +91,10 @@ export default function DialogDesktop({
               </div>
             </>
           )}
-          {dialog.id === "game-1" && (
+          {dialog.id === "duck-game" && (
             <DuckGame isInFocus={currentFocus === dialog.id} />
           )}
-          {dialog.id === "game-2" && <Piano />}
+          {dialog.id === "piano" && <Piano />}
           {dialog.id === "projects" && (
             <div className="project-content">
               <p className="eyebrow">WORK IN PROGRESS</p>

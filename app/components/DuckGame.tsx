@@ -24,9 +24,18 @@ function Duck({ playerY }: { playerY: number }) {
       shapeRendering="crispEdges"
       style={{ position: "absolute", bottom: playerY, left: 100 }}
     >
-      <path fill="#000" d="M9 1h7v1h3v2h2v4h1v1h2v3h-3v6h-1v2h-2v2h-3v2h-3v-2H8v2H5v-2H3v-2H1v-3H0v-5h1V9h2V8h2V5h1V3h3z" />
-      <path fill="#fff" d="M9 2h7v1h3v2h1v5h3v1h-3v7h-1v2h-2v1H4v-1H2v-3H1v-5h1v-2h2V9h2V5h1V4h2z" />
-      <path fill="#000" d="M16 6h2v3h-2zM14 11h1v1h-1zM16 10h1v1h-1zM4 14h1v2h2v1h2v-1h1v-2h1v3h-1v1H6v-1H4z" />
+      <path
+        fill="#000"
+        d="M9 1h7v1h3v2h2v4h1v1h2v3h-3v6h-1v2h-2v2h-3v2h-3v-2H8v2H5v-2H3v-2H1v-3H0v-5h1V9h2V8h2V5h1V3h3z"
+      />
+      <path
+        fill="#fff"
+        d="M9 2h7v1h3v2h1v5h3v1h-3v7h-1v2h-2v1H4v-1H2v-3H1v-5h1v-2h2V9h2V5h1V4h2z"
+      />
+      <path
+        fill="#000"
+        d="M16 6h2v3h-2zM14 11h1v1h-1zM16 10h1v1h-1zM4 14h1v2h2v1h2v-1h1v-2h1v3h-1v1H6v-1H4z"
+      />
     </svg>
   );
 }
@@ -38,7 +47,13 @@ const obstacleSizes = {
   rock: { width: 28, height: 20 },
 };
 
-function Obstacle({ obstacleX, kind }: { obstacleX: number; kind: ObstacleKind }) {
+function Obstacle({
+  obstacleX,
+  kind,
+}: {
+  obstacleX: number;
+  kind: ObstacleKind;
+}) {
   const { width, height } = obstacleSizes[kind];
   if (obstacleX < -width) return null;
 
@@ -54,7 +69,10 @@ function Obstacle({ obstacleX, kind }: { obstacleX: number; kind: ObstacleKind }
     >
       {kind === "grass" ? (
         <>
-          <path fill="#000" d="M6 0h1v3H6v5H5v6H4V9H3V6H2V4H1V3h2v2h1v3h1V3h1zM8 14H6v-4h1V7h1V5h2V4h1v2H9v3H8zM2 14v-3H1V9H0V8h2v2h1v4zM9 14v-3h1V9h2v2h-1v3z" />
+          <path
+            fill="#000"
+            d="M6 0h1v3H6v5H5v6H4V9H3V6H2V4H1V3h2v2h1v3h1V3h1zM8 14H6v-4h1V7h1V5h2V4h1v2H9v3H8zM2 14v-3H1V9H0V8h2v2h1v4zM9 14v-3h1V9h2v2h-1v3z"
+          />
         </>
       ) : (
         <>
@@ -110,7 +128,9 @@ export default function DuckGame({ isInFocus }: { isInFocus: boolean }) {
   const highScore = Math.max(score, savedHighScore);
 
   useEffect(() => {
-    const frame = requestAnimationFrame(() => setSavedHighScore(readHighScore()));
+    const frame = requestAnimationFrame(() =>
+      setSavedHighScore(readHighScore()),
+    );
     return () => cancelAnimationFrame(frame);
   }, []);
 
@@ -191,7 +211,11 @@ export default function DuckGame({ isInFocus }: { isInFocus: boolean }) {
     const spawnObstacle = () => {
       setObstacles((prev) => [
         ...prev,
-        { id: Date.now(), x: 350, kind: Math.random() < 0.5 ? "grass" : "rock" },
+        {
+          id: Date.now(),
+          x: 350,
+          kind: Math.random() < 0.5 ? "grass" : "rock",
+        },
       ]);
 
       const delay = Math.random() * 1500 + 1000;
@@ -251,8 +275,12 @@ export default function DuckGame({ isInFocus }: { isInFocus: boolean }) {
   return (
     <div className="game-stage">
       <div className="game-scoreboard" aria-label="Game scores">
-        <span>Score <strong>{String(score).padStart(3, "0")}</strong></span>
-        <span>High score <strong>{String(highScore).padStart(3, "0")}</strong></span>
+        <span>
+          score <strong>{String(score).padStart(3, "0")}</strong>
+        </span>
+        <span>
+          high score <strong>{String(highScore).padStart(3, "0")}</strong>
+        </span>
       </div>
       <Duck playerY={playerY} />
       {obstacles.map((obstacle) => (
@@ -265,7 +293,7 @@ export default function DuckGame({ isInFocus }: { isInFocus: boolean }) {
 
       {status === "paused" && (
         <div className="dialog-overlay">
-          <h1 className="mb-4 text-2xl">DuckGame</h1>
+          <h1 className="mb-4 text-2xl">duck walk</h1>
 
           <button
             className="border border-black px-4 py-2"
@@ -279,13 +307,13 @@ export default function DuckGame({ isInFocus }: { isInFocus: boolean }) {
 
       {status === "gameOver" && (
         <div className="dialog-overlay">
-          <h1 className="mb-4 text-2xl">Game Over</h1>
+          <h1 className="mb-4 text-2xl">game over</h1>
 
           <button
             className="border border-black px-4 py-2"
             onClick={replayGame}
           >
-            <div className="text">Play again</div>
+            <div className="text">play again</div>
           </button>
           <p className="game-hint">press space to jump</p>
         </div>
