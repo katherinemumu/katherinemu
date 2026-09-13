@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import DesktopWindow from "./Dialog";
-import DinosaurGame from "./DinosaurGame";
+import DuckGame from "./DuckGame";
 import Piano from "./Piano";
 
 export type Dialog = {
@@ -41,7 +41,7 @@ const initialDialogs: Dialog[] = [
 ];
 const titles: Record<string, string> = {
   intro: "welcome.txt",
-  "game-1": "tiny runner",
+  "game-1": "DuckGame",
   "game-2": "piano",
   projects: "projects",
 };
@@ -92,7 +92,7 @@ export default function DialogDesktop({
             </>
           )}
           {dialog.id === "game-1" && (
-            <DinosaurGame isInFocus={currentFocus === dialog.id} />
+            <DuckGame isInFocus={currentFocus === dialog.id} />
           )}
           {dialog.id === "game-2" && <Piano />}
           {dialog.id === "projects" && (
