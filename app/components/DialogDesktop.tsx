@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import DesktopWindow from "./Dialog";
 import DuckGame from "./DuckGame";
@@ -12,6 +11,7 @@ export type Dialog = {
   width: number;
   height: number;
   zIndex: number;
+  openVersion?: number;
 };
 const initialDialogs: Dialog[] = [
   {
@@ -44,14 +44,26 @@ const titles: Record<string, string> = {
   "duck-game": "duck walk",
   piano: "piano",
   projects: "projects",
+  aboutMe: "aboutMe.txt",
 };
 
 export default function DialogDesktop({
   extraDialogs = [],
+  openRequest = null,
 }: {
   extraDialogs?: Dialog[];
+  openRequest?: { id: string; sequence: number } | null;
 }) {
-  const [focusOrder, setFocusOrder] = useState(["intro"]);
+  const [focusOrder, setFocusOrder] = useState(["duck-game", "piano", "intro"]);
+  const [closedDialogs, setClosedDialogs] = useState<string[]>([]);
+  const [lastOpenRequest, setLastOpenRequest] = useState(openRequest);
+  if (lastOpenRequest !== openRequest) {
+    setLastOpenRequest(openRequest);
+    if (openRequest) {
+      setClosedDialogs((previous) => previous.filter((id) => id !== openRequest.id));
+      setFocusOrder((previous) => [...previous.filter((id) => id !== openRequest.id), openRequest.id]);
+    }
+  }
   const currentFocus = focusOrder[focusOrder.length - 1];
   const bringToFront = (id: string) =>
     setFocusOrder((previous) =>
@@ -59,17 +71,31 @@ export default function DialogDesktop({
         ? previous
         : [...previous.filter((item) => item !== id), id],
     );
+  const closeDialog = (id: string) => {
+    setClosedDialogs((previous) => [...previous, id]);
+    setFocusOrder((previous) => previous.filter((item) => item !== id));
+  };
   return (
     <div className="desktop-windows">
       {[...initialDialogs, ...extraDialogs].map((dialog) => (
         <DesktopWindow
-          key={dialog.id}
+          key={`${dialog.id}-${dialog.openVersion ?? 0}`}
           {...dialog}
-          zIndex={10 + Math.max(0, focusOrder.indexOf(dialog.id) + 1)}
+          zIndex={100 + Math.max(0, focusOrder.indexOf(dialog.id) + 1)}
+          styles={dialog.openVersion ? {
+            position: "fixed",
+            left: `max(16px, calc((100vw - ${dialog.width}px) / 2))`,
+            top: `max(16px, calc((100dvh - ${dialog.height}px) / 2))`,
+            width: `min(${dialog.width}px, calc(100vw - 32px))`,
+            maxHeight: "calc(100dvh - 32px)",
+            overflowY: "auto",
+          } : undefined}
           title={titles[dialog.id]}
           active={currentFocus === dialog.id}
-          className={`window-${dialog.id}`}
+          closed={closedDialogs.includes(dialog.id)}
+          className={`window-${dialog.id}${dialog.openVersion ? " window-opened" : ""}`}
           onBringToFront={() => bringToFront(dialog.id)}
+          onClose={() => closeDialog(dialog.id)}
         >
           {dialog.id === "intro" && (
             <>
@@ -88,6 +114,20 @@ export default function DialogDesktop({
               <div className="window-status">
                 <span>1 item</span>
                 <span>glad you’re here ♡</span>
+              </div>
+            </>
+          )}
+          {dialog.id === "aboutMe" && (
+            <>
+              <div className="intro-content">
+                <h1>i’m katherine<span>.</span></h1>
+                <p>I’m a Software Engineer at Watershed 💻.</p>
+                <p>I currently live in SF 🌁 &amp; I’m from Toronto 🍁.</p>
+                <p>When I’m away from my keyboard, I like to eat 🍜, cook 🧑‍🍳, crochet 🧶, and play video games 🎮.</p>
+              </div>
+              <div className="window-status">
+                <span>a little about me</span>
+                <span>thanks for stopping by ♡</span>
               </div>
             </>
           )}

@@ -13,8 +13,25 @@ const projectsDialog: Dialog = {
   zIndex: 100,
 };
 
+const aboutMeDialog: Dialog = {
+  id: "aboutMe",
+  initialX: 0,
+  initialY: 0,
+  width: 570,
+  height: 410,
+  zIndex: 100,
+};
+
 export default function Home() {
-  const [projectsOpen, setProjectsOpen] = useState(false);
+  const [openedDialogs, setOpenedDialogs] = useState<Dialog[]>([]);
+  const [openRequest, setOpenRequest] = useState<{ id: string; sequence: number } | null>(null);
+  const openDialog = (dialog: Dialog) => {
+    setOpenedDialogs((previous) => {
+      const existing = previous.find((item) => item.id === dialog.id);
+      return [...previous.filter((item) => item.id !== dialog.id), { ...dialog, openVersion: (existing?.openVersion ?? 0) + 1 }];
+    });
+    setOpenRequest((previous) => ({ id: dialog.id, sequence: (previous?.sequence ?? 0) + 1 }));
+  };
   return (
     <main className="desktop">
       <header className="desktop-menu">
@@ -25,12 +42,10 @@ export default function Home() {
         <span className="menu-right">make yourself at home ♡</span>
       </header>
       <div className="desktop-workspace">
-        <DialogDesktop extraDialogs={projectsOpen ? [projectsDialog] : []} />
+        <DialogDesktop extraDialogs={openedDialogs} openRequest={openRequest} />
         <nav className="desktop-folders" aria-label="Explore my desktop">
-          <Link href="/aboutMe">
-            <Folder text="about me" />
-          </Link>
-          <Folder text="projects" onClick={() => setProjectsOpen(true)} />
+          <Folder text="aboutMe.txt" icon="text" onClick={() => openDialog(aboutMeDialog)} />
+          <Folder text="projects" onClick={() => openDialog(projectsDialog)} />
           <Folder text="recipes" disabled />
           <Folder text="contact me" disabled />
         </nav>
