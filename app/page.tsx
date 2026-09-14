@@ -8,8 +8,8 @@ const projectsDialog: Dialog = {
   id: "projects",
   initialX: 570,
   initialY: 110,
-  width: 390,
-  height: 250,
+  width: 720,
+  height: 430,
   zIndex: 100,
 };
 

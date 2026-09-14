@@ -3,6 +3,7 @@ import { useState } from "react";
 import DesktopWindow from "./Dialog";
 import DuckGame from "./DuckGame";
 import Piano from "./Piano";
+import Projects from "./Projects";
 
 export type Dialog = {
   id: string;
@@ -136,14 +137,7 @@ export default function DialogDesktop({
           )}
           {dialog.id === "piano" && <Piano />}
           {dialog.id === "projects" && (
-            <div className="project-content">
-              <p className="eyebrow">WORK IN PROGRESS</p>
-              <h2>On my workbench</h2>
-              <p>
-                More projects are coming soon. In the meantime, try the piano or
-                take a little game break.
-              </p>
-            </div>
+            <Projects />
           )}
         </DesktopWindow>
       ))}
