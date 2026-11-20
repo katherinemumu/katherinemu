@@ -32,7 +32,7 @@ export default function CursorSparkles() {
       sparkle.style.left = `${event.clientX}px`;
       sparkle.style.top = `${event.clientY}px`;
       sparkle.style.color = colors[Math.floor(Math.random() * colors.length)];
-      const size = 7 + Math.random() * 8;
+      const size = 20 + Math.random() * 16;
       sparkle.style.width = `${size}px`;
       sparkle.style.height = `${size}px`;
       container.appendChild(sparkle);
@@ -43,7 +43,7 @@ export default function CursorSparkles() {
       const animation = sparkle.animate(
         [
           { opacity: 0, transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(.3)` },
-          { opacity: 1, offset: 0.15 },
+          { opacity: 1, offset: 0.15, transform: `translate(-50%, -50%) rotate(${rotation + 15}deg) scale(1)` },
           { opacity: 0, transform: `translate(calc(-50% + ${driftX}px), calc(-50% + ${driftY}px)) rotate(${rotation + 90}deg) scale(0)` },
         ],
         { duration: 650 + Math.random() * 200, easing: "ease-out" },
