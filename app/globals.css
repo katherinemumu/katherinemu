@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+.cursor-sparkles{position:fixed;inset:0;z-index:2147483647;pointer-events:none;overflow:hidden}
+.cursor-sparkle{position:absolute;background:currentColor;clip-path:polygon(50% 0%,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0% 50%,38% 38%);pointer-events:none}
+@media(prefers-reduced-motion:reduce){.cursor-sparkles{display:none}}
+
 :root{--background:#ccbce4;--foreground:#503d64;--paper:#fff8ee;--blush:#f4cfdf;--border:#503d64}
 @theme inline{--color-background:var(--background);--color-foreground:var(--foreground);--font-sans:var(--font-geist-sans);--font-mono:var(--font-geist-mono)}
 *{box-sizing:border-box}
